@@ -111,23 +111,38 @@ function main.serverhop()
     end
 end
 
-function main.setup_lighting(flags)
+function main.save_lighting()
     main.default_lighting = {
-        Ambient=lighting.Ambient,
-        Brightness=lighting.Brightness,
-        ClockTime=lighting.ClockTime
+        Ambient = lighting.Ambient,
+        Brightness = lighting.Brightness,
+        ClockTime = lighting.ClockTime,
+        ColorShift_Bottom = lighting.ColorShift_Bottom,
+        ColorShift_Top = lighting.ColorShift_Top,
+        EnvironmentDiffuseScale = lighting.EnvironmentDiffuseScale,
+        EnvironmentSpecularScale = lighting.EnvironmentSpecularScale,
+        ExposureCompensation = lighting.ExposureCompensation,
+        FogColor = lighting.FogColor,
+        FogEnd = lighting.FogEnd,
+        FogStart = lighting.FogStart,
+        GeographicLatitude = lighting.GeographicLatitude,
+        GlobalShadows = lighting.GlobalShadows,
+        OutdoorAmbient = lighting.OutdoorAmbient,
+        ShadowSoftness = lighting.ShadowSoftness
     }
-    rs.Heartbeat:Connect(function()
-        if flags["Lighting/Enabled"] then
-            for k,_ in pairs(main.default_lighting) do
-                local val = flags["Lighting/"..k]
-                if type(val)=="table" then val=val[6] end
-                if lighting[k] ~= val then
-                    lighting[k] = val
-                end
-            end
+end
+
+function main.restore_lighting()
+    for k,v in pairs(main.default_lighting) do
+        lighting[k] = v
+    end
+end
+
+function main.set_lighting(tbl)
+    for k,v in pairs(tbl) do
+        if lighting[k] ~= nil then
+            lighting[k] = v
         end
-    end)
+    end
 end
 
 return main
